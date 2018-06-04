@@ -1,9 +1,9 @@
-import express from 'express';
-import path from 'path';
-import open from 'open';
-import webpack from 'webpack';
-import config from '../webpack.config.dev';
-import bodyParser from 'body-parser';
+const express = require('express');
+const path = require('path');
+//const open = require('open');
+//const webpack = require('webpack');
+//const config = require('../webpack.config.dev');
+const bodyParser = require('body-parser');
 
 var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyD-B9yL_qkpkcmHC9G6zE2i-odPFNKoEP4'
@@ -11,12 +11,13 @@ var googleMapsClient = require('@google/maps').createClient({
 
 const port = 3000;
 const app = express();
-const compiler = webpack(config);
+//const compiler = webpack(config);
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
+// app.use(require('webpack-dev-middleware')(compiler, {
+//   noInfo: true,
+//   publicPath: config.output.publicPath
+// }));
+app.use(express.static(path.join(__dirname, './../src')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -61,9 +62,8 @@ app.post('/addLocation', function(req, res) {
 });
 
 app.listen(port, function (error) {
-  if(error) {
-      console.log(error);
-  } else {
-      open(`http://localhost:${port}`)
-  }
+  if (error) console.log(error);
+  // } else {
+  //     open(`http://localhost:${port}`)
+  // }
 });
